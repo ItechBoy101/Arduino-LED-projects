@@ -90,13 +90,6 @@ void startUnlocking(){
     delay(500);
   }
 
-  for(int i = 0; i < 5; i++){
-      digitalWrite(greenLED,HIGH);
-      delay(500);
-      digitalWrite(greenLED, LOW);
-      delay(500);
-  }
-
   digitalWrite(greenLED,HIGH); 
  
 }
