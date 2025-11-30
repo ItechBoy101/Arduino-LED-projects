@@ -1,0 +1,96 @@
+const int redLED = 3;
+const int greenLED = 5;
+
+const int lockPin = 9;
+const int unlockPin = 10;
+
+bool isLocked = false;//system is locked
+
+void setup() {
+  //start unlocked
+  setColor(0,0); 
+
+  pinMode(greenLED, OUTPUT);
+  pinMode(redLED, OUTPUT);
+
+  pinMode(lockPin, INPUT);
+  pinMode(unlockPin, INPUT);
+
+  setColor(0,255);
+}
+
+void loop() {
+
+  // Read both buttons
+  int lockState = digitalRead(lockPin);
+  int unlockState = digitalRead(unlockPin);
+
+  // -------------------------------
+  // LOCKED → waiting for UNLOCK button
+  // -------------------------------
+  if (isLocked && unlockState == HIGH) {
+    startUnlocking();
+    isLocked = false;  // now unlocked
+  }
+
+  // -------------------------------
+  // UNLOCKED → waiting for LOCK button
+  // -------------------------------
+  if (!isLocked && lockState == HIGH) {
+    startLocking();
+    isLocked = true;  // now locked
+  }
+
+  // -------------------------------
+  // LED STATUS HOLDING
+  // -------------------------------
+  if (!isLocked) {
+    setColor(0,255);
+  } else {
+    setColor(255,0);
+  }  
+}
+
+void setColor(int r, int g) {
+  analogWrite(redLED, r);
+  analogWrite(greenLED, g);
+}
+
+void startLocking(){
+  for(int i = 0; i < 5; i++){
+    setColor(0,255);
+    delay(500);
+    setColor(0,0);
+    delay(500);
+  }
+  delayMicroseconds(500);
+
+  setColor(255,255); 
+  delay(1000);
+
+  for(int i = 0; i < 5; i++){
+    setColor(255,255);
+    delay(500);
+    setColor(0,0);
+    delay(500);
+  }
+  delayMicroseconds(500);
+
+  setColor(255,0); 
+
+}
+
+void startUnlocking(){
+
+  setColor(255,0);
+
+  for(int i = 0; i < 5; i++){
+    setColor(255,0);
+    delay(500);
+    setColor(0,0);
+    delay(500);
+  }
+
+  setColor(0,255);
+ 
+}
